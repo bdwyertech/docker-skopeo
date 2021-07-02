@@ -18,7 +18,7 @@ WORKDIR /go/src/github.com/containers/skopeo
 
 RUN apk add --no-cache --virtual .build-deps git build-base btrfs-progs-dev gpgme-dev linux-headers lvm2-dev \
     && git clone --single-branch --branch "$SKOPEO_VERSION" https://github.com/containers/skopeo.git . \
-    && make bin/skopeo \
+    && go build -ldflags="-s -w" -o bin/skopeo ./cmd/skopeo \
     && apk del .build-deps
 
 FROM library/alpine:3.14
