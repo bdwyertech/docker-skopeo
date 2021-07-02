@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"io/ioutil"
 	"log"
 	"os"
@@ -8,9 +9,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/ssm"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/ssm"
 
 	gabs "github.com/Jeffail/gabs/v2"
 )
@@ -95,27 +96,28 @@ func getValue(key string) string {
 	return val
 }
 
-func getParameter(key string) (val string) {
+var ssmClient *ssm.Client
+
+func getParameter(key string) string {
 	// Marshal Request
 	prm := strings.Split(key, ":parameter")[1]
 	region := strings.Split(key, ":")[3]
 
-	// AWS Session
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		Config: *aws.NewConfig().WithRegion(region),
-		// Profile: "tss_dev",
-		// SharedConfigState: session.SharedConfigEnable,
-	}))
+	if ssmClient == nil {
+		cfg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion(region))
+		if err != nil {
+			log.Fatal(err)
+		}
+		ssmClient = ssm.NewFromConfig(cfg)
+	}
 
-	// SSM Client
-	ssmclient := ssm.New(sess)
-	resp, err := ssmclient.GetParameter(&ssm.GetParameterInput{
+	resp, err := ssmClient.GetParameter(context.Background(), &ssm.GetParameterInput{
 		Name:           aws.String(prm),
-		WithDecryption: aws.Bool(true),
+		WithDecryption: true,
 	})
 	if err != nil {
 		log.Fatalf("ERROR: ssm.GetParameter:: %s\n%s", key, err)
 	}
-	val = *resp.Parameter.Value
-	return
+
+	return *resp.Parameter.Value
 }
