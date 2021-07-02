@@ -21,7 +21,7 @@ RUN apk add --no-cache --virtual .build-deps git build-base btrfs-progs-dev gpgm
     && make bin/skopeo \
     && apk del .build-deps
 
-FROM library/alpine:3.13
+FROM library/alpine:3.14
 COPY --from=helper /go/src/github.com/bdwyertech/docker-skopeo/helper-utility/helper-utility /usr/local/bin/
 COPY --from=helper /go/src/github.com/bdwyertech/docker-skopeo/ecr-scanner/ecr-scanner /usr/local/bin/
 COPY --from=skopeo /go/src/github.com/containers/skopeo/bin/skopeo /usr/local/bin/
