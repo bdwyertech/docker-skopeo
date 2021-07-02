@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -12,9 +13,10 @@ import (
 	"gopkg.in/yaml.v3"
 
 	"github.com/araddon/dateparse"
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/ecr"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/ecr"
+	ecrtypes "github.com/aws/aws-sdk-go-v2/service/ecr/types"
 )
 
 type ScanConfig struct {
@@ -56,25 +58,25 @@ func main() {
 	tag := imagePart[1]
 
 	// AWS Session
-	sess := session.Must(session.NewSessionWithOptions(session.Options{
-		Config:            *aws.NewConfig().WithRegion(ecrRegion),
-		SharedConfigState: session.SharedConfigEnable,
-	}))
+	cfg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion(ecrRegion))
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// ECR Client
-	ecrclient := ecr.New(sess)
+	ecrclient := ecr.NewFromConfig(cfg)
 
 	input := &ecr.DescribeImageScanFindingsInput{
 		RegistryId:     aws.String(ecrAccount),
 		RepositoryName: aws.String(image),
-		ImageId: &ecr.ImageIdentifier{
+		ImageId: &ecrtypes.ImageIdentifier{
 			ImageTag: aws.String(tag),
 		},
 	}
 
-	var findings []*ecr.ImageScanFinding
+	var findings []ecrtypes.ImageScanFinding
 	for {
-		resp, err := ecrclient.DescribeImageScanFindings(input)
+		resp, err := ecrclient.DescribeImageScanFindings(context.Background(), input)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -103,7 +105,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var matching []*ecr.ImageScanFinding
+	var matching []ecrtypes.ImageScanFinding
 	for _, finding := range findings {
 		func() {
 			for _, excluded := range scanConfig.Excluded {
@@ -122,7 +124,7 @@ func main() {
 				}
 			}
 			for _, severity := range scanConfig.Severity {
-				if *finding.Severity == severity {
+				if string(finding.Severity) == strings.ToUpper(severity) {
 					matching = append(matching, finding)
 					return
 				}
