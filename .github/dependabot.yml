@@ -7,10 +7,7 @@ updates:
     time: "08:00"
     timezone: America/New_York
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: github.com/aws/aws-sdk-go
-    versions:
-    - 1.37.1
+
 - package-ecosystem: gomod
   directory: "/ecr-scanner"
   schedule:
@@ -18,8 +15,3 @@ updates:
     time: "08:00"
     timezone: America/New_York
   open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: github.com/aws/aws-sdk-go
-    versions:
-    - 1.37.1
-    - 1.37.20
