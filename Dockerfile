@@ -1,10 +1,10 @@
 FROM golang:1.16-alpine as helper
 WORKDIR /go/src/github.com/bdwyertech/docker-skopeo/helper-utility
 COPY helper-utility/ .
-RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimprefix -ldflags="-s -w" .
+RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimpath -ldflags="-s -w" .
 WORKDIR /go/src/github.com/bdwyertech/docker-skopeo/ecr-scanner
 COPY ecr-scanner/ .
-RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimprefix -ldflags="-s -w" .
+RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimpath -ldflags="-s -w" .
 
 FROM golang:1.16-alpine as amazon-ecr-credential-helper
 
