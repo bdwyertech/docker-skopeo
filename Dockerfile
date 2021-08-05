@@ -42,7 +42,7 @@ LABEL org.opencontainers.image.title="bdwyertech/skopeo" \
       org.label-schema.name="bdwyertech/skopeo" \
       org.label-schema.description="For running Skopeo ($SKOPEO_VERSION) within a CI Environment" \
       org.label-schema.url="https://hub.docker.com/r/bdwyertech/skopeo" \
-      org.label-schema.vcs-url="https://github.com/bdwyertech/docker-skopeo.git"\
+      org.label-schema.vcs-url="https://github.com/bdwyertech/docker-skopeo.git" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.build-date=$BUILD_DATE
 
