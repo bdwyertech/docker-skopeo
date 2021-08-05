@@ -11,8 +11,8 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Systems Manager calls this API action when you edit OpsMetadata in Application
-// Manager.
+// Amazon Web Services Systems Manager calls this API operation when you edit
+// OpsMetadata in Application Manager.
 func (c *Client) UpdateOpsMetadata(ctx context.Context, params *UpdateOpsMetadataInput, optFns ...func(*Options)) (*UpdateOpsMetadataOutput, error) {
 	if params == nil {
 		params = &UpdateOpsMetadataInput{}
@@ -40,6 +40,8 @@ type UpdateOpsMetadataInput struct {
 
 	// Metadata to add to an OpsMetadata object.
 	MetadataToUpdate map[string]types.MetadataValue
+
+	noSmithyDocumentSerde
 }
 
 type UpdateOpsMetadataOutput struct {
@@ -49,6 +51,8 @@ type UpdateOpsMetadataOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationUpdateOpsMetadataMiddlewares(stack *middleware.Stack, options Options) (err error) {

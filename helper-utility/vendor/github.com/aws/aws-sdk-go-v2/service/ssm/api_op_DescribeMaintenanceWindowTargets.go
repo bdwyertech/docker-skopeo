@@ -36,7 +36,7 @@ type DescribeMaintenanceWindowTargetsInput struct {
 	WindowId *string
 
 	// Optional filters that can be used to narrow down the scope of the returned
-	// window targets. The supported filter keys are Type, WindowTargetId and
+	// window targets. The supported filter keys are Type, WindowTargetId, and
 	// OwnerInformation.
 	Filters []types.MaintenanceWindowFilter
 
@@ -47,6 +47,8 @@ type DescribeMaintenanceWindowTargetsInput struct {
 	// The token for the next set of items to return. (You received this token from a
 	// previous call.)
 	NextToken *string
+
+	noSmithyDocumentSerde
 }
 
 type DescribeMaintenanceWindowTargetsOutput struct {
@@ -60,6 +62,8 @@ type DescribeMaintenanceWindowTargetsOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationDescribeMaintenanceWindowTargetsMiddlewares(stack *middleware.Stack, options Options) (err error) {

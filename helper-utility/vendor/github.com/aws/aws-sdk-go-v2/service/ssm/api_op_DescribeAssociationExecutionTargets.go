@@ -12,8 +12,7 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Use this API action to view information about a specific execution of a specific
-// association.
+// Views information about a specific execution of a specific association.
 func (c *Client) DescribeAssociationExecutionTargets(ctx context.Context, params *DescribeAssociationExecutionTargetsInput, optFns ...func(*Options)) (*DescribeAssociationExecutionTargetsOutput, error) {
 	if params == nil {
 		params = &DescribeAssociationExecutionTargetsInput{}
@@ -52,6 +51,8 @@ type DescribeAssociationExecutionTargetsInput struct {
 
 	// A token to start the list. Use this token to get the next set of results.
 	NextToken *string
+
+	noSmithyDocumentSerde
 }
 
 type DescribeAssociationExecutionTargetsOutput struct {
@@ -65,6 +66,8 @@ type DescribeAssociationExecutionTargetsOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationDescribeAssociationExecutionTargetsMiddlewares(stack *middleware.Stack, options Options) (err error) {

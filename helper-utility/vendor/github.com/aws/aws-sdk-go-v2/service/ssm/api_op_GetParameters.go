@@ -11,8 +11,8 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Get details of a parameter. Don't confuse this API action with the GetParameter
-// API action.
+// Get details of a parameter. Don't confuse this API operation with the
+// GetParameter API operation.
 func (c *Client) GetParameters(ctx context.Context, params *GetParametersInput, optFns ...func(*Options)) (*GetParametersOutput, error) {
 	if params == nil {
 		params = &GetParametersInput{}
@@ -38,11 +38,13 @@ type GetParametersInput struct {
 	// Return decrypted secure string value. Return decrypted values for secure string
 	// parameters. This flag is ignored for String and StringList parameter types.
 	WithDecryption bool
+
+	noSmithyDocumentSerde
 }
 
 type GetParametersOutput struct {
 
-	// A list of parameters that are not formatted correctly or do not run during an
+	// A list of parameters that aren't formatted correctly or don't run during an
 	// execution.
 	InvalidParameters []string
 
@@ -51,6 +53,8 @@ type GetParametersOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationGetParametersMiddlewares(stack *middleware.Stack, options Options) (err error) {

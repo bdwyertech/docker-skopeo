@@ -34,6 +34,8 @@ type GetPatchBaselineInput struct {
 	//
 	// This member is required.
 	BaselineId *string
+
+	noSmithyDocumentSerde
 }
 
 type GetPatchBaselineOutput struct {
@@ -49,8 +51,8 @@ type GetPatchBaselineOutput struct {
 	ApprovedPatchesComplianceLevel types.PatchComplianceLevel
 
 	// Indicates whether the list of approved patches includes non-security updates
-	// that should be applied to the instances. The default value is 'false'. Applies
-	// to Linux instances only.
+	// that should be applied to the instances. The default value is false. Applies to
+	// Linux instances only.
 	ApprovedPatchesEnableNonSecurity bool
 
 	// The ID of the retrieved patch baseline.
@@ -91,6 +93,8 @@ type GetPatchBaselineOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationGetPatchBaselineMiddlewares(stack *middleware.Stack, options Options) (err error) {

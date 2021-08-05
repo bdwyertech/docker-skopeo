@@ -12,8 +12,8 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Systems Manager calls this API action when displaying all Application Manager
-// OpsMetadata objects or blobs.
+// Amazon Web Services Systems Manager calls this API operation when displaying all
+// Application Manager OpsMetadata objects or blobs.
 func (c *Client) ListOpsMetadata(ctx context.Context, params *ListOpsMetadataInput, optFns ...func(*Options)) (*ListOpsMetadataOutput, error) {
 	if params == nil {
 		params = &ListOpsMetadataInput{}
@@ -41,6 +41,8 @@ type ListOpsMetadataInput struct {
 
 	// A token to start the list. Use this token to get the next set of results.
 	NextToken *string
+
+	noSmithyDocumentSerde
 }
 
 type ListOpsMetadataOutput struct {
@@ -54,6 +56,8 @@ type ListOpsMetadataOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationListOpsMetadataMiddlewares(stack *middleware.Stack, options Options) (err error) {

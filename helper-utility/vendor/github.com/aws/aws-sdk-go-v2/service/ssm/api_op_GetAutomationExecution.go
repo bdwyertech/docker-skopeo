@@ -31,10 +31,12 @@ type GetAutomationExecutionInput struct {
 
 	// The unique identifier for an existing automation execution to examine. The
 	// execution ID is returned by StartAutomationExecution when the execution of an
-	// Automation document is initiated.
+	// Automation runbook is initiated.
 	//
 	// This member is required.
 	AutomationExecutionId *string
+
+	noSmithyDocumentSerde
 }
 
 type GetAutomationExecutionOutput struct {
@@ -44,6 +46,8 @@ type GetAutomationExecutionOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationGetAutomationExecutionMiddlewares(stack *middleware.Stack, options Options) (err error) {

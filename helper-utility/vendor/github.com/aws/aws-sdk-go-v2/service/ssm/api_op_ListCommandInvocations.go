@@ -38,7 +38,7 @@ type ListCommandInvocationsInput struct {
 	CommandId *string
 
 	// (Optional) If set this returns the response of the command executions and any
-	// command output. The default value is 'false'.
+	// command output. The default value is false.
 	Details bool
 
 	// (Optional) One or more filters. Use a filter to return a more specific list of
@@ -56,6 +56,8 @@ type ListCommandInvocationsInput struct {
 	// (Optional) The token for the next set of items to return. (You received this
 	// token from a previous call.)
 	NextToken *string
+
+	noSmithyDocumentSerde
 }
 
 type ListCommandInvocationsOutput struct {
@@ -69,6 +71,8 @@ type ListCommandInvocationsOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationListCommandInvocationsMiddlewares(stack *middleware.Stack, options Options) (err error) {

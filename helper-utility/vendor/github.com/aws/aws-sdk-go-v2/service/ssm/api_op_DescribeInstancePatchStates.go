@@ -30,7 +30,7 @@ func (c *Client) DescribeInstancePatchStates(ctx context.Context, params *Descri
 
 type DescribeInstancePatchStatesInput struct {
 
-	// The ID of the instance whose patch state information should be retrieved.
+	// The ID of the instance for which patch state information should be retrieved.
 	//
 	// This member is required.
 	InstanceIds []string
@@ -41,6 +41,8 @@ type DescribeInstancePatchStatesInput struct {
 	// The token for the next set of items to return. (You received this token from a
 	// previous call.)
 	NextToken *string
+
+	noSmithyDocumentSerde
 }
 
 type DescribeInstancePatchStatesOutput struct {
@@ -54,6 +56,8 @@ type DescribeInstancePatchStatesOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationDescribeInstancePatchStatesMiddlewares(stack *middleware.Stack, options Options) (err error) {

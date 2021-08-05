@@ -41,6 +41,8 @@ type GetMaintenanceWindowExecutionTaskInput struct {
 	//
 	// This member is required.
 	WindowExecutionId *string
+
+	noSmithyDocumentSerde
 }
 
 type GetMaintenanceWindowExecutionTaskOutput struct {
@@ -67,10 +69,10 @@ type GetMaintenanceWindowExecutionTaskOutput struct {
 	// The status of the task.
 	Status types.MaintenanceWindowExecutionStatus
 
-	// The details explaining the Status. Only available for certain status values.
+	// The details explaining the status. Not available for all status values.
 	StatusDetails *string
 
-	// The ARN of the task that ran.
+	// The Amazon Resource Name (ARN) of the task that ran.
 	TaskArn *string
 
 	// The ID of the specific task execution in the maintenance window task that was
@@ -82,8 +84,12 @@ type GetMaintenanceWindowExecutionTaskOutput struct {
 	// the Parameters option in the TaskInvocationParameters structure. For information
 	// about how Systems Manager handles these options for the supported maintenance
 	// window task types, see MaintenanceWindowTaskInvocationParameters. The map has
-	// the following format: Key: string, between 1 and 255 characters Value: an array
-	// of strings, each string is between 1 and 255 characters
+	// the following format:
+	//
+	// * Key: string, between 1 and 255 characters
+	//
+	// * Value: an
+	// array of strings, each between 1 and 255 characters
 	TaskParameters []map[string]types.MaintenanceWindowTaskParameterValueExpression
 
 	// The type of task that was run.
@@ -94,6 +100,8 @@ type GetMaintenanceWindowExecutionTaskOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationGetMaintenanceWindowExecutionTaskMiddlewares(stack *middleware.Stack, options Options) (err error) {

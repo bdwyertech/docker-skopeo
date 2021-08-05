@@ -13,8 +13,7 @@ import (
 )
 
 // Retrieves the current effective patches (the patch and the approval state) for
-// the specified patch baseline. Note that this API applies only to Windows patch
-// baselines.
+// the specified patch baseline. Applies to patch baselines for Windows only.
 func (c *Client) DescribeEffectivePatchesForPatchBaseline(ctx context.Context, params *DescribeEffectivePatchesForPatchBaselineInput, optFns ...func(*Options)) (*DescribeEffectivePatchesForPatchBaselineOutput, error) {
 	if params == nil {
 		params = &DescribeEffectivePatchesForPatchBaselineInput{}
@@ -43,6 +42,8 @@ type DescribeEffectivePatchesForPatchBaselineInput struct {
 	// The token for the next set of items to return. (You received this token from a
 	// previous call.)
 	NextToken *string
+
+	noSmithyDocumentSerde
 }
 
 type DescribeEffectivePatchesForPatchBaselineOutput struct {
@@ -56,6 +57,8 @@ type DescribeEffectivePatchesForPatchBaselineOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationDescribeEffectivePatchesForPatchBaselineMiddlewares(stack *middleware.Stack, options Options) (err error) {

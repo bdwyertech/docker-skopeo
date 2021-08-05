@@ -10,9 +10,9 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Deletes an activation. You are not required to delete an activation. If you
+// Deletes an activation. You aren't required to delete an activation. If you
 // delete an activation, you can no longer use it to register additional managed
-// instances. Deleting an activation does not de-register managed instances. You
+// instances. Deleting an activation doesn't de-register managed instances. You
 // must manually de-register managed instances.
 func (c *Client) DeleteActivation(ctx context.Context, params *DeleteActivationInput, optFns ...func(*Options)) (*DeleteActivationOutput, error) {
 	if params == nil {
@@ -35,11 +35,15 @@ type DeleteActivationInput struct {
 	//
 	// This member is required.
 	ActivationId *string
+
+	noSmithyDocumentSerde
 }
 
 type DeleteActivationOutput struct {
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationDeleteActivationMiddlewares(stack *middleware.Stack, options Options) (err error) {

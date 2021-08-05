@@ -13,8 +13,9 @@ import (
 )
 
 // Describes details about the activation, such as the date and time the activation
-// was created, its expiration date, the IAM role assigned to the instances in the
-// activation, and the number of instances registered by using this activation.
+// was created, its expiration date, the Identity and Access Management (IAM) role
+// assigned to the instances in the activation, and the number of instances
+// registered by using this activation.
 func (c *Client) DescribeActivations(ctx context.Context, params *DescribeActivationsInput, optFns ...func(*Options)) (*DescribeActivationsOutput, error) {
 	if params == nil {
 		params = &DescribeActivationsInput{}
@@ -41,11 +42,13 @@ type DescribeActivationsInput struct {
 
 	// A token to start the list. Use this token to get the next set of results.
 	NextToken *string
+
+	noSmithyDocumentSerde
 }
 
 type DescribeActivationsOutput struct {
 
-	// A list of activations for your AWS account.
+	// A list of activations for your account.
 	ActivationList []types.Activation
 
 	// The token for the next set of items to return. Use this token to get the next
@@ -54,6 +57,8 @@ type DescribeActivationsOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationDescribeActivationsMiddlewares(stack *middleware.Stack, options Options) (err error) {

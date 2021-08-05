@@ -10,8 +10,8 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Use this API action to run an association immediately and only one time. This
-// action can be helpful when troubleshooting associations.
+// Runs an association immediately and only one time. This operation can be helpful
+// when troubleshooting associations.
 func (c *Client) StartAssociationsOnce(ctx context.Context, params *StartAssociationsOnceInput, optFns ...func(*Options)) (*StartAssociationsOnceOutput, error) {
 	if params == nil {
 		params = &StartAssociationsOnceInput{}
@@ -33,11 +33,15 @@ type StartAssociationsOnceInput struct {
 	//
 	// This member is required.
 	AssociationIds []string
+
+	noSmithyDocumentSerde
 }
 
 type StartAssociationsOnceOutput struct {
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationStartAssociationsOnceMiddlewares(stack *middleware.Stack, options Options) (err error) {

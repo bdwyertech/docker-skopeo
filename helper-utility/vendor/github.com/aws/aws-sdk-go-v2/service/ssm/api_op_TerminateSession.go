@@ -11,7 +11,7 @@ import (
 )
 
 // Permanently ends a session and closes the data connection between the Session
-// Manager client and SSM Agent on the instance. A terminated session cannot be
+// Manager client and SSM Agent on the instance. A terminated session isn't be
 // resumed.
 func (c *Client) TerminateSession(ctx context.Context, params *TerminateSessionInput, optFns ...func(*Options)) (*TerminateSessionOutput, error) {
 	if params == nil {
@@ -34,6 +34,8 @@ type TerminateSessionInput struct {
 	//
 	// This member is required.
 	SessionId *string
+
+	noSmithyDocumentSerde
 }
 
 type TerminateSessionOutput struct {
@@ -43,6 +45,8 @@ type TerminateSessionOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationTerminateSessionMiddlewares(stack *middleware.Stack, options Options) (err error) {

@@ -28,15 +28,17 @@ func (c *Client) RegisterPatchBaselineForPatchGroup(ctx context.Context, params 
 
 type RegisterPatchBaselineForPatchGroupInput struct {
 
-	// The ID of the patch baseline to register the patch group with.
+	// The ID of the patch baseline to register with the patch group.
 	//
 	// This member is required.
 	BaselineId *string
 
-	// The name of the patch group that should be registered with the patch baseline.
+	// The name of the patch group to be registered with the patch baseline.
 	//
 	// This member is required.
 	PatchGroup *string
+
+	noSmithyDocumentSerde
 }
 
 type RegisterPatchBaselineForPatchGroupOutput struct {
@@ -49,6 +51,8 @@ type RegisterPatchBaselineForPatchGroupOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationRegisterPatchBaselineForPatchGroupMiddlewares(stack *middleware.Stack, options Options) (err error) {

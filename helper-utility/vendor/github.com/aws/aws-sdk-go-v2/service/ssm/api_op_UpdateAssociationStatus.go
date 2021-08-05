@@ -11,8 +11,8 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Updates the status of the Systems Manager document associated with the specified
-// instance.
+// Updates the status of the Amazon Web Services Systems Manager document (SSM
+// document) associated with the specified instance.
 func (c *Client) UpdateAssociationStatus(ctx context.Context, params *UpdateAssociationStatusInput, optFns ...func(*Options)) (*UpdateAssociationStatusOutput, error) {
 	if params == nil {
 		params = &UpdateAssociationStatusInput{}
@@ -40,10 +40,12 @@ type UpdateAssociationStatusInput struct {
 	// This member is required.
 	InstanceId *string
 
-	// The name of the Systems Manager document.
+	// The name of the SSM document.
 	//
 	// This member is required.
 	Name *string
+
+	noSmithyDocumentSerde
 }
 
 type UpdateAssociationStatusOutput struct {
@@ -53,6 +55,8 @@ type UpdateAssociationStatusOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationUpdateAssociationStatusMiddlewares(stack *middleware.Stack, options Options) (err error) {

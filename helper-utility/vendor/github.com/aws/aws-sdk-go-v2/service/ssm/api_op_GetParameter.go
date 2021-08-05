@@ -12,7 +12,7 @@ import (
 )
 
 // Get information about a parameter by using the parameter name. Don't confuse
-// this API action with the GetParameters API action.
+// this API operation with the GetParameters API operation.
 func (c *Client) GetParameter(ctx context.Context, params *GetParameterInput, optFns ...func(*Options)) (*GetParameterOutput, error) {
 	if params == nil {
 		params = &GetParameterInput{}
@@ -38,6 +38,8 @@ type GetParameterInput struct {
 	// Return decrypted values for secure string parameters. This flag is ignored for
 	// String and StringList parameter types.
 	WithDecryption bool
+
+	noSmithyDocumentSerde
 }
 
 type GetParameterOutput struct {
@@ -47,6 +49,8 @@ type GetParameterOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationGetParameterMiddlewares(stack *middleware.Stack, options Options) (err error) {

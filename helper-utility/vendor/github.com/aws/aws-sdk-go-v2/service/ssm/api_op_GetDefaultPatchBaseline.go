@@ -11,10 +11,10 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Retrieves the default patch baseline. Note that Systems Manager supports
-// creating multiple default patch baselines. For example, you can create a default
-// patch baseline for each operating system. If you do not specify an operating
-// system value, the default patch baseline for Windows is returned.
+// Retrieves the default patch baseline. Amazon Web Services Systems Manager
+// supports creating multiple default patch baselines. For example, you can create
+// a default patch baseline for each operating system. If you don't specify an
+// operating system value, the default patch baseline for Windows is returned.
 func (c *Client) GetDefaultPatchBaseline(ctx context.Context, params *GetDefaultPatchBaselineInput, optFns ...func(*Options)) (*GetDefaultPatchBaselineOutput, error) {
 	if params == nil {
 		params = &GetDefaultPatchBaselineInput{}
@@ -34,6 +34,8 @@ type GetDefaultPatchBaselineInput struct {
 
 	// Returns the default patch baseline for the specified operating system.
 	OperatingSystem types.OperatingSystem
+
+	noSmithyDocumentSerde
 }
 
 type GetDefaultPatchBaselineOutput struct {
@@ -46,6 +48,8 @@ type GetDefaultPatchBaselineOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationGetDefaultPatchBaselineMiddlewares(stack *middleware.Stack, options Options) (err error) {

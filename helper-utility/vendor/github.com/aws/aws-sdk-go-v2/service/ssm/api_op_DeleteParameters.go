@@ -32,6 +32,8 @@ type DeleteParametersInput struct {
 	//
 	// This member is required.
 	Names []string
+
+	noSmithyDocumentSerde
 }
 
 type DeleteParametersOutput struct {
@@ -39,12 +41,14 @@ type DeleteParametersOutput struct {
 	// The names of the deleted parameters.
 	DeletedParameters []string
 
-	// The names of parameters that weren't deleted because the parameters are not
+	// The names of parameters that weren't deleted because the parameters aren't
 	// valid.
 	InvalidParameters []string
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationDeleteParametersMiddlewares(stack *middleware.Stack, options Options) (err error) {

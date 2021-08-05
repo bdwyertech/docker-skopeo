@@ -12,9 +12,10 @@ import (
 	smithyhttp "github.com/aws/smithy-go/transport/http"
 )
 
-// Returns all State Manager associations in the current AWS account and Region.
-// You can limit the results to a specific State Manager association document or
-// instance by specifying a filter.
+// Returns all State Manager associations in the current account and Region. You
+// can limit the results to a specific State Manager association document or
+// instance by specifying a filter. State Manager is a capability of Amazon Web
+// Services Systems Manager.
 func (c *Client) ListAssociations(ctx context.Context, params *ListAssociationsInput, optFns ...func(*Options)) (*ListAssociationsOutput, error) {
 	if params == nil {
 		params = &ListAssociationsInput{}
@@ -35,7 +36,7 @@ type ListAssociationsInput struct {
 	// One or more filters. Use a filter to return a more specific list of results.
 	// Filtering associations using the InstanceID attribute only returns legacy
 	// associations created using the InstanceID attribute. Associations targeting the
-	// instance that are part of the Target Attributes ResourceGroup or Tags are not
+	// instance that are part of the Target Attributes ResourceGroup or Tags aren't
 	// returned.
 	AssociationFilterList []types.AssociationFilter
 
@@ -46,6 +47,8 @@ type ListAssociationsInput struct {
 	// The token for the next set of items to return. (You received this token from a
 	// previous call.)
 	NextToken *string
+
+	noSmithyDocumentSerde
 }
 
 type ListAssociationsOutput struct {
@@ -59,6 +62,8 @@ type ListAssociationsOutput struct {
 
 	// Metadata pertaining to the operation's result.
 	ResultMetadata middleware.Metadata
+
+	noSmithyDocumentSerde
 }
 
 func (c *Client) addOperationListAssociationsMiddlewares(stack *middleware.Stack, options Options) (err error) {
