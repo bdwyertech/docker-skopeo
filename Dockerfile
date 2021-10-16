@@ -1,4 +1,4 @@
-FROM golang:1.16-alpine as helper
+FROM golang:1.17-alpine as helper
 WORKDIR /go/src/github.com/bdwyertech/docker-skopeo/helper-utility
 COPY helper-utility/ .
 RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimpath -ldflags="-s -w" .
@@ -6,13 +6,13 @@ WORKDIR /go/src/github.com/bdwyertech/docker-skopeo/ecr-scanner
 COPY ecr-scanner/ .
 RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimpath -ldflags="-s -w" .
 
-FROM golang:1.16-alpine as amazon-ecr-credential-helper
+FROM golang:1.17-alpine as amazon-ecr-credential-helper
 
 RUN apk add --no-cache --virtual .build-deps git \
     && CGO_ENABLED=0 GOFLAGS=-mod=vendor go get github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login \
     && apk del .build-deps
 
-FROM golang:1.16-alpine as skopeo
+FROM golang:1.17-alpine as skopeo
 ARG SKOPEO_VERSION='v1.5.0'
 WORKDIR /go/src/github.com/containers/skopeo
 

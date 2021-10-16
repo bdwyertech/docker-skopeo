@@ -44,6 +44,16 @@ type StartChangeRequestExecutionInput struct {
 	// This member is required.
 	Runbooks []types.Runbook
 
+	// Indicates whether the change request can be approved automatically without the
+	// need for manual approvals. If AutoApprovable is enabled in a change template,
+	// then setting AutoApprove to true in StartChangeRequestExecution creates a change
+	// request that bypasses approver review. Change Calendar restrictions are not
+	// bypassed in this scenario. If the state of an associated calendar is CLOSED,
+	// change freeze approvers must still grant permission for this change request to
+	// run. If they don't, the change won't be processed until the calendar state is
+	// again OPEN.
+	AutoApprove bool
+
 	// User-provided details about the change. If no details are provided, content
 	// specified in the Template information section of the associated change template
 	// is added.
@@ -76,11 +86,11 @@ type StartChangeRequestExecutionInput struct {
 	// Optional metadata that you assign to a resource. You can specify a maximum of
 	// five tags for a change request. Tags enable you to categorize a resource in
 	// different ways, such as by purpose, owner, or environment. For example, you
-	// might want to tag a change request to identify an environment or target Region.
-	// In this case, you could specify the following key-value pairs:
+	// might want to tag a change request to identify an environment or target Amazon
+	// Web Services Region. In this case, you could specify the following key-value
+	// pairs:
 	//
-	// *
-	// Key=Environment,Value=Production
+	// * Key=Environment,Value=Production
 	//
 	// * Key=Region,Value=us-east-2
 	Tags []types.Tag

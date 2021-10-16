@@ -12146,6 +12146,11 @@ func awsAwsjson11_serializeOpDocumentRegisterTaskWithMaintenanceWindowInput(v *R
 		ok.String(*v.ClientToken)
 	}
 
+	if len(v.CutoffBehavior) > 0 {
+		ok := object.Key("CutoffBehavior")
+		ok.String(string(v.CutoffBehavior))
+	}
+
 	if v.Description != nil {
 		ok := object.Key("Description")
 		ok.String(*v.Description)
@@ -12490,6 +12495,11 @@ func awsAwsjson11_serializeOpDocumentStartAutomationExecutionInput(v *StartAutom
 func awsAwsjson11_serializeOpDocumentStartChangeRequestExecutionInput(v *StartChangeRequestExecutionInput, value smithyjson.Value) error {
 	object := value.Object()
 	defer object.Close()
+
+	if v.AutoApprove {
+		ok := object.Key("AutoApprove")
+		ok.Boolean(v.AutoApprove)
+	}
 
 	if v.ChangeDetails != nil {
 		ok := object.Key("ChangeDetails")
@@ -12962,6 +12972,11 @@ func awsAwsjson11_serializeOpDocumentUpdateMaintenanceWindowTargetInput(v *Updat
 func awsAwsjson11_serializeOpDocumentUpdateMaintenanceWindowTaskInput(v *UpdateMaintenanceWindowTaskInput, value smithyjson.Value) error {
 	object := value.Object()
 	defer object.Close()
+
+	if len(v.CutoffBehavior) > 0 {
+		ok := object.Key("CutoffBehavior")
+		ok.String(string(v.CutoffBehavior))
+	}
 
 	if v.Description != nil {
 		ok := object.Key("Description")
