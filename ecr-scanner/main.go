@@ -11,14 +11,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/TylerBrock/colorjson"
 	"gopkg.in/yaml.v3"
 
+	"github.com/TylerBrock/colorjson"
 	"github.com/araddon/dateparse"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	ecrtypes "github.com/aws/aws-sdk-go-v2/service/ecr/types"
+	"github.com/fatih/color"
 )
 
 type ScanConfig struct {
@@ -28,6 +29,12 @@ type ScanConfig struct {
 		Expires     string `yaml:"expires,omitempty"`
 		Description string `yaml:"description,omitempty"`
 	} `yaml:"excluded"`
+}
+
+func init() {
+	if os.Getenv("GITLAB_CI") != "" {
+		color.NoColor = false
+	}
 }
 
 func main() {
