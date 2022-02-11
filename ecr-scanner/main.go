@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"io/ioutil"
 	"log"
 	"net/url"
@@ -10,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/TylerBrock/colorjson"
 	"gopkg.in/yaml.v3"
 
 	"github.com/araddon/dateparse"
@@ -133,7 +135,22 @@ func main() {
 	}
 
 	if len(matching) > 0 {
-		log.Println(matching)
+		jsonBytes, err := json.Marshal(matching)
+		if err != nil {
+			log.Fatal(err)
+		}
+		var findings interface{}
+		err = json.Unmarshal(jsonBytes, &findings)
+		if err != nil {
+			log.Fatal(err)
+		}
+		f := colorjson.NewFormatter()
+		f.Indent = 2
+		out, err := f.Marshal(findings)
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(string(out))
 		log.Fatal("ERROR: Fatal findings detected")
 	}
 
