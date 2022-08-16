@@ -86,19 +86,15 @@ func main() {
 	}
 
 	findings := make([]ecrtypes.ImageScanFinding, 0)
-	for {
-		resp, err := ecrclient.DescribeImageScanFindings(context.Background(), input)
+	findingsPaginator := ecr.NewDescribeImageScanFindingsPaginator(ecrclient, input)
+	for findingsPaginator.HasMorePages() {
+		res, err := findingsPaginator.NextPage(context.Background())
 		if err != nil {
 			log.Fatal(err)
 		}
-
-		findings = append(findings, resp.ImageScanFindings.Findings...)
-
-		if resp.NextToken == nil {
-			break
+		if res.ImageScanFindings != nil {
+			findings = append(findings, res.ImageScanFindings.Findings...)
 		}
-
-		input.NextToken = resp.NextToken
 	}
 
 	pwd, err := os.Getwd()
