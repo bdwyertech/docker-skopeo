@@ -9,7 +9,7 @@ RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimpath -ldflags="-s -w" .
 FROM golang:1.19-alpine as amazon-ecr-credential-helper
 
 RUN apk add --no-cache --virtual .build-deps git \
-    && CGO_ENABLED=0 GOFLAGS=-mod=vendor go get github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login \
+    && CGO_ENABLED=0 go install -ldflags="-s -w" github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login@latest \
     && apk del .build-deps
 
 FROM golang:1.19-alpine as skopeo
