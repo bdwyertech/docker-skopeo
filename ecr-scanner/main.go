@@ -3,13 +3,15 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
-	"log"
 	"net/url"
 	"os"
 	"path"
 	"strings"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	"gopkg.in/yaml.v3"
 
@@ -83,7 +85,7 @@ func main() {
 		},
 	}
 
-	var findings []ecrtypes.ImageScanFinding
+	findings := make([]ecrtypes.ImageScanFinding, 0)
 	for {
 		resp, err := ecrclient.DescribeImageScanFindings(context.Background(), input)
 		if err != nil {
@@ -114,7 +116,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	var matching []ecrtypes.ImageScanFinding
+	matching := make([]ecrtypes.ImageScanFinding, 0)
 	for _, finding := range findings {
 		func() {
 			for _, excluded := range scanConfig.Excluded {
@@ -157,9 +159,9 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println(string(out))
-		log.Fatal("ERROR: Fatal findings detected")
+		fmt.Println(string(out))
+		log.Fatal("Findings detected!")
 	}
 
-	log.Println("No findings detected!")
+	log.Infoln("No findings detected!")
 }
