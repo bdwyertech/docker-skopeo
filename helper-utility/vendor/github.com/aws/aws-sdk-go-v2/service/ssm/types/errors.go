@@ -374,9 +374,11 @@ func (e *DocumentLimitExceeded) ErrorCode() string             { return "Documen
 func (e *DocumentLimitExceeded) ErrorFault() smithy.ErrorFault { return smithy.FaultClient }
 
 // The document can't be shared with more Amazon Web Services user accounts. You
-// can share a document with a maximum of 20 accounts. You can publicly share up to
-// five documents. If you need to increase this limit, contact Amazon Web Services
-// Support.
+// can specify a maximum of 20 accounts per API operation to share a private
+// document. By default, you can share a private document with a maximum of 1,000
+// accounts and publicly share up to five documents. If you need to increase the
+// quota for privately or publicly shared Systems Manager documents, contact Amazon
+// Web Services Support.
 type DocumentPermissionLimit struct {
 	Message *string
 
@@ -1530,6 +1532,25 @@ func (e *InvalidSchedule) ErrorMessage() string {
 }
 func (e *InvalidSchedule) ErrorCode() string             { return "InvalidSchedule" }
 func (e *InvalidSchedule) ErrorFault() smithy.ErrorFault { return smithy.FaultClient }
+
+// The specified tag key or value isn't valid.
+type InvalidTag struct {
+	Message *string
+
+	noSmithyDocumentSerde
+}
+
+func (e *InvalidTag) Error() string {
+	return fmt.Sprintf("%s: %s", e.ErrorCode(), e.ErrorMessage())
+}
+func (e *InvalidTag) ErrorMessage() string {
+	if e.Message == nil {
+		return ""
+	}
+	return *e.Message
+}
+func (e *InvalidTag) ErrorCode() string             { return "InvalidTag" }
+func (e *InvalidTag) ErrorFault() smithy.ErrorFault { return smithy.FaultClient }
 
 // The target isn't valid or doesn't exist. It might not be configured for Systems
 // Manager or you might not have permission to perform the operation.
