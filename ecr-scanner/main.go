@@ -123,7 +123,8 @@ func main() {
 							log.Fatal(err)
 						}
 						if time.Now().After(t) {
-							log.Fatal("Exception has expired!", excluded)
+							log.Warnln("Exception has expired!", excluded)
+							break
 						}
 					}
 					log.Println("Skipping", excluded.ID)
