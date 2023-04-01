@@ -20,15 +20,14 @@ import (
 // includes the Name parameter. Before calling this API action, we recommend that
 // you call the DescribeAssociation API operation and make a note of all optional
 // parameters required for your UpdateAssociation call. In order to call this API
-// operation, your Identity and Access Management (IAM) user account, group, or
-// role must be configured with permission to call the DescribeAssociation API
-// operation. If you don't have permission to call DescribeAssociation, then you
-// receive the following error: An error occurred (AccessDeniedException) when
-// calling the UpdateAssociation operation: User: <user_arn> isn't authorized to
-// perform: ssm:DescribeAssociation on resource: <resource_arn> When you update an
-// association, the association immediately runs against the specified targets. You
-// can add the ApplyOnlyAtCronInterval parameter to run the association during the
-// next schedule run.
+// operation, a user, group, or role must be granted permission to call the
+// DescribeAssociation API operation. If you don't have permission to call
+// DescribeAssociation, then you receive the following error: An error occurred
+// (AccessDeniedException) when calling the UpdateAssociation operation: User:
+// isn't authorized to perform: ssm:DescribeAssociation on resource:  When you
+// update an association, the association immediately runs against the specified
+// targets. You can add the ApplyOnlyAtCronInterval parameter to run the
+// association during the next schedule run.
 func (c *Client) UpdateAssociation(ctx context.Context, params *UpdateAssociationInput, optFns ...func(*Options)) (*UpdateAssociationOutput, error) {
 	if params == nil {
 		params = &UpdateAssociationInput{}
@@ -50,6 +49,10 @@ type UpdateAssociationInput struct {
 	//
 	// This member is required.
 	AssociationId *string
+
+	// The details for the CloudWatch alarm you want to apply to an automation or
+	// command.
+	AlarmConfiguration *types.AlarmConfiguration
 
 	// By default, when you update an association, the system runs it immediately after
 	// it is updated and then according to the schedule you specified. Specify this
@@ -159,7 +162,7 @@ type UpdateAssociationInput struct {
 	// in the Amazon Web Services Systems Manager User Guide. To use offsets, you must
 	// specify the ApplyOnlyAtCronInterval parameter. This option tells the system not
 	// to run an association immediately after you create it.
-	ScheduleOffset int32
+	ScheduleOffset *int32
 
 	// The mode for generating association compliance. You can specify AUTO or MANUAL.
 	// In AUTO mode, the system uses the status of the association execution to
