@@ -4,6 +4,7 @@ package ssm
 
 import (
 	"context"
+	"fmt"
 	awsmiddleware "github.com/aws/aws-sdk-go-v2/aws/middleware"
 	"github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/aws-sdk-go-v2/service/ssm/types"
@@ -31,16 +32,19 @@ func (c *Client) GetParameters(ctx context.Context, params *GetParametersInput, 
 
 type GetParametersInput struct {
 
-	// Names of the parameters for which you want to query information. To query by
-	// parameter label, use "Name": "name:label". To query by parameter version, use
-	// "Name": "name:version".
+	// The names or Amazon Resource Names (ARNs) of the parameters that you want to
+	// query. For parameters shared with you from another account, you must use the
+	// full ARNs. To query by parameter label, use "Name": "name:label" . To query by
+	// parameter version, use "Name": "name:version" . For more information about
+	// shared parameters, see Working with shared parameters (https://docs.aws.amazon.com/systems-manager/latest/userguide/sharing.html)
+	// in the Amazon Web Services Systems Manager User Guide.
 	//
 	// This member is required.
 	Names []string
 
 	// Return decrypted secure string value. Return decrypted values for secure string
 	// parameters. This flag is ignored for String and StringList parameter types.
-	WithDecryption bool
+	WithDecryption *bool
 
 	noSmithyDocumentSerde
 }
@@ -61,12 +65,22 @@ type GetParametersOutput struct {
 }
 
 func (c *Client) addOperationGetParametersMiddlewares(stack *middleware.Stack, options Options) (err error) {
+	if err := stack.Serialize.Add(&setOperationInputMiddleware{}, middleware.After); err != nil {
+		return err
+	}
 	err = stack.Serialize.Add(&awsAwsjson11_serializeOpGetParameters{}, middleware.After)
 	if err != nil {
 		return err
 	}
 	err = stack.Deserialize.Add(&awsAwsjson11_deserializeOpGetParameters{}, middleware.After)
 	if err != nil {
+		return err
+	}
+	if err := addProtocolFinalizerMiddlewares(stack, options, "GetParameters"); err != nil {
+		return fmt.Errorf("add protocol finalizers: %v", err)
+	}
+
+	if err = addlegacyEndpointContextSetter(stack, options); err != nil {
 		return err
 	}
 	if err = addSetLoggerMiddleware(stack, options); err != nil {
@@ -87,16 +101,13 @@ func (c *Client) addOperationGetParametersMiddlewares(stack *middleware.Stack, o
 	if err = addRetryMiddlewares(stack, options); err != nil {
 		return err
 	}
-	if err = addHTTPSignerV4Middleware(stack, options); err != nil {
-		return err
-	}
 	if err = awsmiddleware.AddRawResponseToMetadata(stack); err != nil {
 		return err
 	}
 	if err = awsmiddleware.AddRecordResponseTiming(stack); err != nil {
 		return err
 	}
-	if err = addClientUserAgent(stack); err != nil {
+	if err = addClientUserAgent(stack, options); err != nil {
 		return err
 	}
 	if err = smithyhttp.AddErrorCloseResponseBodyMiddleware(stack); err != nil {
@@ -105,10 +116,16 @@ func (c *Client) addOperationGetParametersMiddlewares(stack *middleware.Stack, o
 	if err = smithyhttp.AddCloseResponseBodyMiddleware(stack); err != nil {
 		return err
 	}
+	if err = addSetLegacyContextSigningOptionsMiddleware(stack); err != nil {
+		return err
+	}
 	if err = addOpGetParametersValidationMiddleware(stack); err != nil {
 		return err
 	}
 	if err = stack.Initialize.Add(newServiceMetadataMiddleware_opGetParameters(options.Region), middleware.Before); err != nil {
+		return err
+	}
+	if err = awsmiddleware.AddRecursionDetection(stack); err != nil {
 		return err
 	}
 	if err = addRequestIDRetrieverMiddleware(stack); err != nil {
@@ -120,6 +137,9 @@ func (c *Client) addOperationGetParametersMiddlewares(stack *middleware.Stack, o
 	if err = addRequestResponseLogging(stack, options); err != nil {
 		return err
 	}
+	if err = addDisableHTTPSMiddleware(stack, options); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -127,7 +147,6 @@ func newServiceMetadataMiddleware_opGetParameters(region string) *awsmiddleware.
 	return &awsmiddleware.RegisterServiceMetadata{
 		Region:        region,
 		ServiceID:     ServiceID,
-		SigningName:   "ssm",
 		OperationName: "GetParameters",
 	}
 }
