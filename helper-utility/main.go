@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"os/user"
@@ -34,7 +34,7 @@ func main() {
 	}
 	defer jsonFile.Close()
 
-	byteValue, err := ioutil.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -113,7 +113,7 @@ func getParameter(key string) string {
 
 	resp, err := ssmClient.GetParameter(context.Background(), &ssm.GetParameterInput{
 		Name:           aws.String(prm),
-		WithDecryption: true,
+		WithDecryption: aws.Bool(true),
 	})
 	if err != nil {
 		log.Fatalf("ERROR: ssm.GetParameter:: %s\n%s", key, err)
