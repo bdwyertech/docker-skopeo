@@ -36,6 +36,13 @@ func init() {
 	if os.Getenv("GITLAB_CI") != "" {
 		color.NoColor = false
 	}
+	if v := os.Getenv("ECR_SCANNER_DEBUG"); len(v) != 0 {
+		log.SetLevel(log.DebugLevel)
+	}
+	if v := os.Getenv("ECR_SCANNER_TRACE"); len(v) != 0 {
+		log.SetLevel(log.TraceLevel)
+		log.SetReportCaller(true)
+	}
 }
 
 func main() {
