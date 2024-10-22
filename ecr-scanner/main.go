@@ -20,6 +20,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	ecrtypes "github.com/aws/aws-sdk-go-v2/service/ecr/types"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/fatih/color"
 )
 
@@ -78,6 +79,15 @@ func main() {
 	cfg, err := config.LoadDefaultConfig(context.Background(), config.WithRegion(ecrRegion))
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if log.IsLevelEnabled(log.DebugLevel) {
+		stsclient := sts.NewFromConfig(cfg)
+		id, err := stsclient.GetCallerIdentity(context.Background(), &sts.GetCallerIdentityInput{})
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Debugf("CallerIdentity: %#v", id)
 	}
 
 	// ECR Client
