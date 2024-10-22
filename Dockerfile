@@ -1,4 +1,4 @@
-FROM golang:1.21-alpine as helper
+FROM golang:1.23-alpine as helper
 WORKDIR /go/src/github.com/bdwyertech/docker-skopeo/helper-utility
 COPY helper-utility/ .
 RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimpath -ldflags="-s -w" .
@@ -6,14 +6,14 @@ WORKDIR /go/src/github.com/bdwyertech/docker-skopeo/ecr-scanner
 COPY ecr-scanner/ .
 RUN CGO_ENABLED=0 GOFLAGS=-mod=vendor go build -trimpath -ldflags="-s -w" .
 
-FROM golang:1.21-alpine as amazon-ecr-credential-helper
+FROM golang:1.23-alpine as amazon-ecr-credential-helper
 
 RUN apk add --no-cache --virtual .build-deps git \
     && CGO_ENABLED=0 go install -ldflags="-s -w" github.com/awslabs/amazon-ecr-credential-helper/ecr-login/cli/docker-credential-ecr-login@latest \
     && apk del .build-deps
 
-FROM golang:1.21-alpine3.18 as skopeo
-ARG SKOPEO_VERSION='v1.14.2'
+FROM golang:1.23-alpine3.20 as skopeo
+ARG SKOPEO_VERSION='v1.16.1'
 WORKDIR /go/src/github.com/containers/skopeo
 
 RUN apk add --no-cache --virtual .build-deps git build-base btrfs-progs-dev gpgme-dev linux-headers lvm2-dev \
@@ -21,7 +21,7 @@ RUN apk add --no-cache --virtual .build-deps git build-base btrfs-progs-dev gpgm
     && go build -ldflags="-s -w" -o bin/skopeo ./cmd/skopeo \
     && apk del .build-deps
 
-FROM library/alpine:3.18
+FROM library/alpine:3.20
 COPY --from=helper /go/src/github.com/bdwyertech/docker-skopeo/helper-utility/helper-utility /usr/local/bin/
 COPY --from=helper /go/src/github.com/bdwyertech/docker-skopeo/ecr-scanner/ecr-scanner /usr/local/bin/
 COPY --from=skopeo /go/src/github.com/containers/skopeo/bin/skopeo /usr/local/bin/
@@ -29,7 +29,7 @@ COPY --from=amazon-ecr-credential-helper /go/bin/docker-credential-ecr-login /us
 
 ARG BUILD_DATE
 ARG VCS_REF
-ARG SKOPEO_VERSION='v1.14.2'
+ARG SKOPEO_VERSION='v1.16.1'
 
 LABEL org.opencontainers.image.title="bdwyertech/skopeo" \
       org.opencontainers.image.version=$SKOPEO_VERSION \
